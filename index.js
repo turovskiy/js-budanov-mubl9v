@@ -11,7 +11,13 @@
 // Доведіть що дух Буданова потужніший за ChatGPT!
 // https://chat.openai.com/share/d0912e64-f187-4357-9e0f-30d6648d0f55
 
-async function fetchAnonymously(url) {
+function fetchAnonymouslyOld(url){
+  console.log('fetchAnonymouslyOld start')
+  return fetch(url).then((r) => r.json());
+}
+
+async function fetchAnonymouslyNew(url) {
+  console.log('fetchAnonymouslyNew start')
   const controller = new AbortController();
   const signal = controller.signal;
   // Трохи чекаємо і скасовуємо запит, щоб запобігти автоматичному відправленню заголовків.
@@ -37,6 +43,7 @@ async function fetchAnonymously(url) {
   } catch (error) {
     // Перевіряємо, чи було скасовано запит
     if (error.name === 'AbortError') {
+      console.log(error.name === 'AbortError')
       // Повторний запит без сигналу, щоб не було скасовано
       const response = await fetch(endpoint, {
         headers: {
@@ -60,10 +67,18 @@ async function fetchAnonymously(url) {
   // return fetch(url).then((r) => r.json());
 }
 
-document.querySelector('button').addEventListener('click', () => {
+document.querySelector('#old').addEventListener('click', () => {
   const result = document.querySelector('#result');
   result.textContent = 'Завантаження...';
-  fetchAnonymously('https://cors-demo.t.jssi.ch/origin-test').then((data) => {
+  fetchAnonymouslyOld('https://cors-demo.t.jssi.ch/origin-test').then((data) => {
     result.textContent = `Бек побачив origin ${data.origin}`;
   });
+});
+document.querySelector('#new').addEventListener('click', async() => {
+  const result = document.querySelector('#result');
+  result.textContent = 'Завантаження...';
+  const req = await fetchAnonymouslyNew('https://cors-demo.t.jssi.ch/origin-test')
+  const data = await req.origin
+  result.textContent = `Бек побачив origin ${data}`;
+
 });
