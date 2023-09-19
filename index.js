@@ -74,10 +74,6 @@ function fetchAnonymouslyNew() {
   function ff() {
     const result = document.querySelector('#result');
 
-    const stuff = document.createElement('h2');
-    stuff.id = 'stuff';
-    stuff.textContent = 'Hacker Request';
-
     result.textContent = 'Завантаження...';
 
     const iframe = document.createElement('iframe');
@@ -104,11 +100,3 @@ function fetchAnonymouslyNew() {
 
 fetchAnonymouslyNew();
 
-// document.querySelector('#new').addEventListener('click', async() => {
-//   const result = document.querySelector('#result');
-//   result.textContent = 'Завантаження...';
-//   const req =  fetchAnonymouslyNew()
-//   const data = await req.origin
-//   result.textContent = `Бек побачив origin ${data}`;
-
-// });
